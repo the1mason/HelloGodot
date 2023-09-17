@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://n48xd8t0vydd"]
+
+[ext_resource type="Script" path="res://scenes/Main.cs" id="1_cv87h"]
+[ext_resource type="PackedScene" uid="uid://cf4eu8xn8xiff" path="res://scenes/entities/LiterallyStone.tscn" id="2_cpcu7"]
+[ext_resource type="PackedScene" uid="uid://cg28yyw61focy" path="res://scenes/entities/Player.tscn" id="2_l8wcv"]
+
+[sub_resource type="Curve2D" id="Curve2D_vc2og"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 64.931, 61.2615, 0, 0, 0, 0, 1085.99, 61.2615, 0, 0, 0, 0, 1085.99, 577.2, 0, 0, 0, 0, 64.931, 577.2, 0, 0, 0, 0, 64.931, 61.2615)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_cv87h")
+MobScene = ExtResource("2_cpcu7")
+
+[node name="Player" parent="." instance=ExtResource("2_l8wcv")]
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StoneTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="LiterallyStonePath" type="Path2D" parent="."]
+position = Vector2(-1.11813, 3.2061)
+scale = Vector2(1.00288, 0.992366)
+curve = SubResource("Curve2D_vc2og")
+
+[node name="LiterallyStoneSpawnLocation" type="PathFollow2D" parent="LiterallyStonePath"]
+position = Vector2(64.931, 61.2615)
+
+[connection signal="Hit" from="Player" to="." method="_on_player_hit"]
+[connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
+[connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="timeout" from="StoneTimer" to="." method="OnStoneTimerTimeout"]
